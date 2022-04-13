@@ -7,7 +7,7 @@ import {
   ImageBackground,
 } from 'react-native';
 
-export const SLIDER_WIDTH = Dimensions.get('window').width - 10;
+export const SLIDER_WIDTH = Dimensions.get('window').width;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
 const CarouselCardItem = ({item, index}) => {

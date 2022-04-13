@@ -115,6 +115,7 @@ const Dashboard = () => {
           data={data}
           renderItem={CustomNewsListItem}
           keyExtractor={item => item.id}
+          showsVerticalScrollIndicator={false}
         />
       </View>
     </SafeAreaView>
@@ -137,10 +138,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   containerCategoryList: {
-    paddingHorizontal: 10,
+    paddingLeft: 15,
   },
   containerNewsLineList: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
   },
   componentLatestNewsSeeAll: {
     flexDirection: 'row',
