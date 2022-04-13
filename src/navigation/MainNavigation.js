@@ -2,6 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import DashboardScreen from '../screens/DashBoardScreen/Dashboard';
 import UserLoginScreen from '../screens/Authentication/UserLogin/UserLogin';
+import UserRegistration from '../screens/Authentication/UserRegistration/UserRegistration';
 import SearchScreen from '../screens/SearchScreen/Search';
 import NewsDetails from '../screens/NewsDetailsScreen/NewsDetails';
 import HotUpdates from '../screens/NotificationScreen/HotUpdates';
@@ -16,7 +17,7 @@ const MainNavigator = () => {
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="Dashboard"
-          component={HotUpdates}
+          component={UserRegistration}
           options={{animationEnabled: false}}
         />
       </Stack.Navigator>
