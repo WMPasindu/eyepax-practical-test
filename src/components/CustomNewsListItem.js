@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Dimensions,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 
 export const SLIDER_WIDTH = Dimensions.get('window').width;
@@ -13,21 +14,23 @@ export const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
 const CustomNewsListItem = ({item, index}) => {
   return (
     <View style={styles.container} key={index}>
-      <ImageBackground source={{uri: item.imgUrl}} style={styles.image}>
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}>
-          <Text style={styles.descriptionText}>{item.title}</Text>
-          <Text style={styles.descriptionText}>{item.body}</Text>
-        </View>
-      </ImageBackground>
+      <TouchableOpacity onPress={() => console.log('Item : ' + index)}>
+        <ImageBackground source={{uri: item.imgUrl}} style={styles.image}>
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+            }}>
+            <Text style={styles.descriptionText}>{item.title}</Text>
+            <Text style={styles.descriptionText}>{item.body}</Text>
+          </View>
+        </ImageBackground>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -45,6 +48,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
     elevation: 7,
+    marginVertical: 5,
   },
   image: {
     width: ITEM_WIDTH,

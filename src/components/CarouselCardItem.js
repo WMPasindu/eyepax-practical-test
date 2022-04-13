@@ -11,7 +11,6 @@ export const SLIDER_WIDTH = Dimensions.get('window').width - 10;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
 const CarouselCardItem = ({item, index}) => {
-  console.log(ITEM_WIDTH);
   return (
     <View style={styles.container} key={index}>
       <ImageBackground source={{uri: item.imgUrl}} style={styles.image}>
