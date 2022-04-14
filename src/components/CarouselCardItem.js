@@ -13,7 +13,7 @@ export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 const CarouselCardItem = ({item, index}) => {
   return (
     <View style={styles.container} key={index}>
-      <ImageBackground source={{uri: item.imgUrl}} style={styles.image}>
+      <ImageBackground source={{uri: item.urlToImage}} style={styles.image}>
         <View
           style={{
             position: 'absolute',
@@ -24,8 +24,9 @@ const CarouselCardItem = ({item, index}) => {
             justifyContent: 'flex-end',
             alignItems: 'center',
           }}>
-          <Text style={styles.descriptionText}>{item.title}</Text>
-          <Text style={styles.descriptionText}>{item.body}</Text>
+          <Text style={styles.authorText}>{item.author}</Text>
+          <Text style={styles.titleText}>{item.title}</Text>
+          <Text style={styles.descriptionText}>{item.description}</Text>
         </View>
       </ImageBackground>
     </View>
@@ -63,11 +64,20 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
+  authorText: {
+    color: 'white',
+    fontSize: 10,
+    padding: 5,
+  },
   titleText: {
     color: 'white',
+    fontSize: 16,
+    padding: 5,
   },
   descriptionText: {
     color: 'white',
+    fontSize: 10,
+    padding: 10,
   },
 });
 

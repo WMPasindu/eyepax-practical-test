@@ -1,11 +1,15 @@
 import React from 'react';
 import {View} from 'react-native';
+import {useSelector} from 'react-redux';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import CarouselCardItem, {SLIDER_WIDTH, ITEM_WIDTH} from './CarouselCardItem';
 
 const CarouselCards = () => {
   const [index, setIndex] = React.useState(0);
   const isCarousel = React.useRef(null);
+  const {articles, articlesCount, headLinesArray} = useSelector(
+    state => state.topNewsReducer,
+  );
 
   data = [
     {
@@ -44,7 +48,7 @@ const CarouselCards = () => {
     <View>
       <Carousel
         ref={isCarousel}
-        data={data}
+        data={headLinesArray}
         renderItem={CarouselCardItem}
         sliderWidth={SLIDER_WIDTH}
         itemWidth={ITEM_WIDTH}

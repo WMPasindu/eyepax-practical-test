@@ -1,133 +1,65 @@
-// Example of Splash, Login and Sign Up in React Native
-// https://aboutreact.com/react-native-login-and-signup/
-
-// Import React and Component
 import React, {useState, createRef} from 'react';
 import {
   StyleSheet,
   TextInput,
   View,
   Text,
-  Image,
   KeyboardAvoidingView,
-  Keyboard,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {register} from '../../../redux/actions/registerActions';
 import Loader from '../../../components/Loader';
+import * as yup from 'yup';
+import {useFormik} from 'formik';
 
-const UserRegistration = props => {
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [userAge, setUserAge] = useState('');
-  const [userAddress, setUserAddress] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState('');
-  const [isRegistraionSuccess, setIsRegistraionSuccess] = useState(false);
+const validationSchema = yup.object({
+  username: yup
+    .string()
+    .matches(/[@]{1}/, 'incorrectUsername')
+    .required('required'),
+  password: yup.string().required('required'),
+});
 
+const UserRegistration = ({navigation}) => {
+  const dispatch = useDispatch();
+  const {isRegistrationSucess} = useSelector(state => state.registerReducer);
   const emailInputRef = createRef();
-  const ageInputRef = createRef();
-  const addressInputRef = createRef();
   const passwordInputRef = createRef();
 
-  const handleSubmitButton = () => {
-    setErrortext('');
-    if (!userName) {
-      alert('Please fill Name');
-      return;
-    }
-    if (!userEmail) {
-      alert('Please fill Email');
-      return;
-    }
-    if (!userAge) {
-      alert('Please fill Age');
-      return;
-    }
-    if (!userAddress) {
-      alert('Please fill Address');
-      return;
-    }
-    if (!userPassword) {
-      alert('Please fill Password');
-      return;
-    }
-    //Show Loader
-    setLoading(true);
-    var dataToSend = {
-      name: userName,
-      email: userEmail,
-      age: userAge,
-      address: userAddress,
-      password: userPassword,
-    };
-    var formBody = [];
-    for (var key in dataToSend) {
-      var encodedKey = encodeURIComponent(key);
-      var encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: async values => {
+      dispatch(
+        register({username: values.username, password: values.password}),
+      );
+    },
+  });
 
-    fetch('http://localhost:3000/api/user/register', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        //Header Defination
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        //Hide Loader
-        setLoading(false);
-        console.log(responseJson);
-        // If server response message same as Data Matched
-        if (responseJson.status === 'success') {
-          setIsRegistraionSuccess(true);
-          console.log('Registration Successful. Please Login to proceed');
-        } else {
-          setErrortext(responseJson.msg);
-        }
-      })
-      .catch(error => {
-        //Hide Loader
-        setLoading(false);
-        console.error(error);
-      });
+  const onSetUsername = value => {
+    formik.setFieldValue('username', value, true);
   };
-  if (isRegistraionSuccess) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: '#307ecc',
-          justifyContent: 'center',
-        }}>
-        {/* <Image
-          source={require('../Image/success.png')}
-          style={{
-            height: 150,
-            resizeMode: 'contain',
-            alignSelf: 'center',
-          }}
-        /> */}
-        <Text style={styles.successTextStyle}>Registration Successful</Text>
-        <TouchableOpacity
-          style={styles.buttonStyle}
-          activeOpacity={0.5}
-          onPress={() => props.navigation.navigate('LoginScreen')}>
-          <Text style={styles.buttonTextStyle}>Login Now</Text>
-        </TouchableOpacity>
-      </View>
-    );
+
+  const onSetPassword = value => {
+    formik.setFieldValue('password', value, true);
+  };
+
+  const onHandleregistration = () => {
+    formik.submitForm();
+  };
+
+  if (isRegistrationSucess) {
+    navigation.navigate('UserLogin');
   }
+
   return (
     <View
       style={{flex: 1, justifyContent: 'center', backgroundColor: '#307ecc'}}>
-      <Loader loading={loading} />
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
@@ -135,102 +67,54 @@ const UserRegistration = props => {
           justifyContent: 'center',
           alignContent: 'center',
         }}>
-        <View style={{alignItems: 'center'}}>
-          {/* <Image
-            source={require('../Image/aboutreact.png')}
-            style={{
-              width: '50%',
-              height: 100,
-              resizeMode: 'contain',
-              margin: 30,
-            }}
-          /> */}
-        </View>
         <KeyboardAvoidingView enabled>
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={UserName => setUserName(UserName)}
-              underlineColorAndroid="#f000"
-              placeholder="Enter Name"
+              value={formik.values.username}
+              onChangeText={UserEmail => onSetUsername(UserEmail)}
+              placeholder="Enter Email" //dummy@abc.com
               placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              returnKeyType="next"
-              onSubmitEditing={() =>
-                emailInputRef.current && emailInputRef.current.focus()
-              }
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserEmail => setUserEmail(UserEmail)}
-              underlineColorAndroid="#f000"
-              placeholder="Enter Email"
-              placeholderTextColor="#8b9cb5"
+              autoCapitalize="none"
               keyboardType="email-address"
-              ref={emailInputRef}
               returnKeyType="next"
               onSubmitEditing={() =>
-                passwordInputRef.current && passwordInputRef.current.focus()
+                passwordInputRef.current && emailInputRef.current.focus()
               }
               blurOnSubmit={false}
             />
           </View>
+          {formik.errors.username ? (
+            <Text style={styles.errorTextStyle}>
+              {formik.errors.username === 'incorrectUsername'
+                ? 'incorrent username, please try again.'
+                : 'username required.'}
+            </Text>
+          ) : null}
+
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={UserPassword => setUserPassword(UserPassword)}
+              value={formik.values.password}
+              onChangeText={UserPassword => onSetPassword(UserPassword)}
               underlineColorAndroid="#f000"
               placeholder="Enter Password"
               placeholderTextColor="#8b9cb5"
               ref={passwordInputRef}
               returnKeyType="next"
               secureTextEntry={true}
-              onSubmitEditing={() =>
-                ageInputRef.current && ageInputRef.current.focus()
-              }
               blurOnSubmit={false}
             />
           </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserAge => setUserAge(UserAge)}
-              underlineColorAndroid="#f000"
-              placeholder="Enter Age"
-              placeholderTextColor="#8b9cb5"
-              keyboardType="numeric"
-              ref={ageInputRef}
-              returnKeyType="next"
-              onSubmitEditing={() =>
-                addressInputRef.current && addressInputRef.current.focus()
-              }
-              blurOnSubmit={false}
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={UserAddress => setUserAddress(UserAddress)}
-              underlineColorAndroid="#f000"
-              placeholder="Enter Address"
-              placeholderTextColor="#8b9cb5"
-              autoCapitalize="sentences"
-              ref={addressInputRef}
-              returnKeyType="next"
-              onSubmitEditing={Keyboard.dismiss}
-              blurOnSubmit={false}
-            />
-          </View>
-          {errortext != '' ? (
-            <Text style={styles.errorTextStyle}>{errortext}</Text>
+          {formik.errors.password ? (
+            <Text style={styles.errorTextStyle}>{'incorrent username'}</Text>
           ) : null}
           <TouchableOpacity
             style={styles.buttonStyle}
             activeOpacity={0.5}
-            onPress={handleSubmitButton}>
+            onPress={() => {
+              onHandleregistration();
+            }}>
             <Text style={styles.buttonTextStyle}>REGISTER</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>

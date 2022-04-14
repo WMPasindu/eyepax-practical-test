@@ -1,70 +1,67 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   SafeAreaView,
-  FlatList,
   StyleSheet,
   Text,
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  getDataToDashboad,
+  getTopHeadLines,
+} from '../../redux/actions/appDataActions';
 import CarouselCards from '../../components/CarouselCards';
 import CustomNewsListItem from '../../components/CustomNewsListItem';
 import CategoryListItem from '../../components/CategoryListItem';
 import {SeeAllIcon, BellIcon} from '../../assets';
 
-const Dashboard = () => {
-  data = [
-    {
-      id: 1,
-      title: 'Aenean leo',
-      body: 'Ut tincidunt tincidunt erat. Sed cursus turpis vitae tortor. Quisque malesuada placerat nisl. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.',
-      imgUrl: 'https://picsum.photos/id/11/200/300',
-    },
-    {
-      id: 2,
-      title: 'In turpis',
-      body: 'Aenean ut eros et nisl sagittis vestibulum. Donec posuere vulputate arcu. Proin faucibus arcu quis ante. Curabitur at lacus ac velit ornare lobortis. ',
-      imgUrl: 'https://picsum.photos/id/10/200/300',
-    },
-    {
-      id: 3,
-      title: 'Lorem Ipsum',
-      body: 'Phasellus ullamcorper ipsum rutrum nunc. Nullam quis ante. Etiam ultricies nisi vel augue. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc.',
-      imgUrl: 'https://picsum.photos/id/12/200/300',
-    },
-  ];
+const Dashboard = ({navigation}) => {
+  const [selectedItem, setSelectedItem] = useState(0);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getDataToDashboad('popularity', '2022-04-14'));
+    dispatch(getTopHeadLines('country', 'us'));
+  }, []);
+
+  const fetchMoreData = () => {
+    console.log('Helloooooo');
+  };
+
+  const {articles, articlesCount} = useSelector(state => state.topNewsReducer);
 
   const ANIMAL_NAMES = [
     {
       id: 1,
-      name: 'Cat',
+      name: 'Healthy',
     },
     {
       id: 2,
-      name: 'Dog',
+      name: 'Technology',
     },
     {
       id: 3,
-      name: 'Chicken',
+      name: 'Finance',
     },
     {
       id: 4,
-      name: 'Duck',
+      name: 'Arts',
     },
     {
       id: 5,
-      name: 'Cow',
-    },
-    {
-      id: 6,
-      name: 'Deer',
-    },
-    {
-      id: 7,
-      name: 'Horse',
+      name: 'Science',
     },
   ];
+
+  if (articles) {
+    console.log('Hello Pasindu ', articles);
+  }
+
+  const clicked = value => {
+    setSelectedItem(value);
+    console.log('asasasasasasasasasasas', value);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -79,7 +76,8 @@ const Dashboard = () => {
           textStyle={{color: '#818181', fontSize: 15}}
         />
         <View style={styles.containerNotification}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('NotificationScreen')}>
             <BellIcon />
           </TouchableOpacity>
         </View>
@@ -89,7 +87,9 @@ const Dashboard = () => {
         <View style={styles.headerTitleLatestNews}>
           <Text style={styles.headerTitleLatestNewsText}>Latest News</Text>
           <View>
-            <TouchableOpacity style={styles.componentLatestNewsSeeAll}>
+            <TouchableOpacity
+              style={styles.componentLatestNewsSeeAll}
+              onPress={() => navigation.navigate('SearchScreen')}>
               <Text style={styles.headerTitleLatestNewsSeeAllText}>
                 See All
               </Text>
@@ -101,22 +101,16 @@ const Dashboard = () => {
       </View>
 
       <View style={styles.containerCategoryList}>
-        <FlatList
+        <CategoryListItem
           data={ANIMAL_NAMES}
-          renderItem={CategoryListItem}
-          keyExtractor={item => item.id}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
+          navigate={navigation}
+          onPress={clicked}
+          selectItem={selectedItem}
         />
       </View>
 
       <View style={styles.containerNewsLineList}>
-        <FlatList
-          data={data}
-          renderItem={CustomNewsListItem}
-          keyExtractor={item => item.id}
-          showsVerticalScrollIndicator={false}
-        />
+        <CustomNewsListItem articles={articles} navigate={navigation} />
       </View>
     </SafeAreaView>
   );

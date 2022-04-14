@@ -1,45 +1,3 @@
-// import React from 'react';
-// import {View, Text, TextInput, TouchableOpacity} from 'react-native';
-
-// const UserLogin = () => {
-//   return (
-//     <View
-//       style={{
-//         flex: 1,
-//         backgroundColor: '#fff',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//       }}>
-//       <Text style={{color: '#223e4b', fontSize: 20, marginBottom: 16}}>
-//         Login
-//       </Text>
-//       <View style={{paddingHorizontal: 32, marginBottom: 16, width: '100%'}}>
-//         <TextInput
-//           placeholder="Enter your email"
-//           autoCapitalize="none"
-//           keyboardType="email-address"
-//         />
-//       </View>
-//       <View style={{paddingHorizontal: 32, marginBottom: 16, width: '100%'}}>
-//         <TextInput
-//           placeholder="Enter your password"
-//           secureTextEntry
-//           autoCompleteType="password"
-//         />
-//       </View>
-//       <TouchableOpacity>
-//         <Text>LOGIN</Text>
-//       </TouchableOpacity>
-//     </View>
-//   );
-// };
-
-// export default UserLogin;
-
-// Example of Splash, Login and Sign Up in React Native
-// https://aboutreact.com/react-native-login-and-signup/
-
-// Import React and Component
 import React, {useState, createRef} from 'react';
 import {
   StyleSheet,
@@ -47,77 +5,51 @@ import {
   View,
   Text,
   ScrollView,
-  Image,
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
+import {login} from '../../../redux/actions/loginActions';
+import * as yup from 'yup';
+import {useFormik} from 'formik';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import Loader from '../../../components/Loader';
+const validationSchema = yup.object({
+  username: yup
+    .string()
+    .matches(/[@]{1}/, 'incorrectUsername')
+    .required('required'),
+  password: yup.string().required('required'),
+});
 
 const LoginScreen = ({navigation}) => {
-  const [userEmail, setUserEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState('');
-
+  const dispatch = useDispatch();
   const passwordInputRef = createRef();
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: async values => {
+      dispatch(login({username: values.username, password: values.password}));
+    },
+  });
 
-  const handleSubmitPress = () => {
-    setErrortext('');
-    if (!userEmail) {
-      alert('Please fill Email');
-      return;
-    }
-    if (!userPassword) {
-      alert('Please fill Password');
-      return;
-    }
-    setLoading(true);
-    let dataToSend = {email: userEmail, password: userPassword};
-    let formBody = [];
-    for (let key in dataToSend) {
-      let encodedKey = encodeURIComponent(key);
-      let encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
+  const onSetUsername = value => {
+    formik.setFieldValue('username', value, true);
+  };
 
-    fetch('http://localhost:3000/api/user/login', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        //Header Defination
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        //Hide Loader
-        setLoading(false);
-        console.log(responseJson);
-        // If server response message same as Data Matched
-        if (responseJson.status === 'success') {
-          AsyncStorage.setItem('user_id', responseJson.data.email);
-          console.log(responseJson.data.email);
-          navigation.replace('DrawerNavigationRoutes');
-        } else {
-          setErrortext(responseJson.msg);
-          console.log('Please check your email id or password');
-        }
-      })
-      .catch(error => {
-        //Hide Loader
-        setLoading(false);
-        console.error(error);
-      });
+  const onSetPassword = value => {
+    formik.setFieldValue('password', value, true);
+  };
+
+  const onHandleLogin = () => {
+    formik.submitForm();
   };
 
   return (
     <View style={styles.mainBody}>
-      <Loader loading={loading} />
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
@@ -127,21 +59,11 @@ const LoginScreen = ({navigation}) => {
         }}>
         <View>
           <KeyboardAvoidingView enabled>
-            <View style={{alignItems: 'center'}}>
-              {/* <Image
-                source={require('../Image/aboutreact.png')}
-                style={{
-                  width: '50%',
-                  height: 100,
-                  resizeMode: 'contain',
-                  margin: 30,
-                }}
-              /> */}
-            </View>
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
-                onChangeText={UserEmail => setUserEmail(UserEmail)}
+                value={formik.values.username}
+                onChangeText={UserEmail => onSetUsername(UserEmail)}
                 placeholder="Enter Email" //dummy@abc.com
                 placeholderTextColor="#8b9cb5"
                 autoCapitalize="none"
@@ -154,10 +76,19 @@ const LoginScreen = ({navigation}) => {
                 blurOnSubmit={false}
               />
             </View>
+            {formik.errors.username ? (
+              <Text style={styles.errorTextStyle}>
+                {formik.errors.username === 'incorrectUsername'
+                  ? 'incorrent username, please try again.'
+                  : 'username required.'}
+              </Text>
+            ) : null}
+
             <View style={styles.SectionStyle}>
               <TextInput
                 style={styles.inputStyle}
-                onChangeText={UserPassword => setUserPassword(UserPassword)}
+                value={formik.values.password}
+                onChangeText={UserPassword => onSetPassword(UserPassword)}
                 placeholder="Enter Password" //12345
                 placeholderTextColor="#8b9cb5"
                 keyboardType="default"
@@ -169,18 +100,18 @@ const LoginScreen = ({navigation}) => {
                 returnKeyType="next"
               />
             </View>
-            {errortext != '' ? (
-              <Text style={styles.errorTextStyle}>{errortext}</Text>
+            {formik.errors.password ? (
+              <Text style={styles.errorTextStyle}>{'incorrent username'}</Text>
             ) : null}
             <TouchableOpacity
               style={styles.buttonStyle}
               activeOpacity={0.5}
-              onPress={handleSubmitPress}>
+              onPress={() => onHandleLogin()}>
               <Text style={styles.buttonTextStyle}>LOGIN</Text>
             </TouchableOpacity>
             <Text
               style={styles.registerTextStyle}
-              onPress={() => navigation.navigate('RegisterScreen')}>
+              onPress={() => navigation.navigate('UserRegistration')}>
               New Here ? Register
             </Text>
           </KeyboardAvoidingView>

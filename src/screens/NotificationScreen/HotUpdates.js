@@ -10,13 +10,14 @@ import {
 import HotUpdatesListItem from '../../components/HotUpdatesListItem';
 import {BackButton} from '../../assets';
 
-const Dashboard = () => {
+const Dashboard = ({navigation}) => {
   const MenuButton = () => <BackButton />;
 
   const Header = () => (
     <React.Fragment>
       <View style={styles.headerContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('DashboardScreen')}>
           <MenuButton />
         </TouchableOpacity>
         <View style={styles.headerTextContainer}>
@@ -66,7 +67,7 @@ const Dashboard = () => {
         <FlatList
           data={data}
           renderItem={HotUpdatesListItem}
-          keyExtractor={item => item.id}
+          keyExtractor={(item, index) => index.toString()}
           showsVerticalScrollIndicator={false}
         />
       </View>

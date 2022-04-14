@@ -8,11 +8,13 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import moment from 'moment';
 import {ScrollView} from 'react-native-gesture-handler';
 import {BackIconWithBackground, FavouritIcon} from '../../assets';
 import COLORS from '../../const/colors';
 
 const NewsDetails = ({navigation, route}) => {
+  const item = route.params.itemObject;
   return (
     <SafeAreaView
       style={{
@@ -20,9 +22,7 @@ const NewsDetails = ({navigation, route}) => {
         backgroundColor: COLORS.white,
       }}>
       <StatusBar translucent backgroundColor="rgba(0,0,0,0)" />
-      <ImageBackground
-        style={{flex: 1}}
-        source={require('../../assets/Rectangle.png')}>
+      <ImageBackground style={{flex: 1}} source={{uri: item.urlToImage}}>
         <View style={style.header}>
           {/* <Icon
             name="arrow-back-ios"
@@ -31,7 +31,9 @@ const NewsDetails = ({navigation, route}) => {
             onPress={navigation.goBack}
           />
           <Icon name="more-vert" size={28} color={COLORS.white} /> */}
-          <BackIconWithBackground />
+          <TouchableOpacity onPress={navigation.goBack}>
+            <BackIconWithBackground />
+          </TouchableOpacity>
         </View>
       </ImageBackground>
       <View style={style.detailsContainer}>
@@ -44,7 +46,7 @@ const NewsDetails = ({navigation, route}) => {
               color: COLORS.dark,
               margin: 5,
             }}>
-            {'Sunday, 9 May 2021'}
+            {moment(item.publishedAt).format('dddd, d MMM yyyy')}
           </Text>
           <Text
             style={{
@@ -54,9 +56,7 @@ const NewsDetails = ({navigation, route}) => {
               color: COLORS.dark,
               margin: 5,
             }}>
-            {
-              'Crypto investors should be prepared to lose all their money, BOE governor says'
-            }
+            {item.title}
           </Text>
           <Text
             style={{
@@ -66,7 +66,7 @@ const NewsDetails = ({navigation, route}) => {
               color: COLORS.dark,
               margin: 5,
             }}>
-            {'Published by Rayan Browne'}
+            {'Published by ' + item.author}
           </Text>
         </View>
 
@@ -77,11 +77,9 @@ const NewsDetails = ({navigation, route}) => {
           <Text
             style={{
               marginTop: 40,
-              fontSize: 20,
+              fontSize: 16,
             }}>
-            London -
-            asasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasassasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasassa
-            asasasasasaas
+            {item.content}
           </Text>
         </ScrollView>
       </View>

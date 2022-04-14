@@ -15,7 +15,6 @@ const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
 
 const MainNavigator = () => {
-  const dispatch = useDispatch();
   const {isLoggedIn} = useSelector(state => state.loginReducer);
 
   const AuthNavigator = () => {
@@ -28,11 +27,17 @@ const MainNavigator = () => {
             animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
           }}
         />
+        <Stack.Screen
+          name="UserRegistration"
+          component={UserRegistration}
+          options={{
+            animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+          }}
+        />
       </AuthStack.Navigator>
     );
   };
 
-  console.log(isLoggedIn);
   if (isLoggedIn) {
     return (
       <NavigationContainer
@@ -42,8 +47,23 @@ const MainNavigator = () => {
         }}>
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen
-            name="Dashboard"
+            name="DashboardScreen"
             component={DashboardScreen}
+            options={{animationEnabled: false}}
+          />
+          <Stack.Screen
+            name="NewsDetailsScreen"
+            component={NewsDetails}
+            options={{animationEnabled: false}}
+          />
+          <Stack.Screen
+            name="SearchScreen"
+            component={SearchScreen}
+            options={{animationEnabled: false}}
+          />
+          <Stack.Screen
+            name="NotificationScreen"
+            component={HotUpdates}
             options={{animationEnabled: false}}
           />
         </Stack.Navigator>
