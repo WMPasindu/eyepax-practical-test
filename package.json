@@ -21,6 +21,7 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "^12.3.0",
     "react-native-toast-message": "^2.1.5",
+    "react-navigation-helpers": "^2.0.2-alpha-2",
     "react-redux": "^7.2.8",
     "redux-flipper": "^2.0.1",
     "redux-persist": "^6.0.0",
