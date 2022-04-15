@@ -4,6 +4,7 @@ Practice is an Integrated with News API.
 
 ## Starting point
 The Project has ```app.js``` as Entry Point.
+* if you have a problem to retrieve data please change newsapi - API key. To change, you must replace the ```config.js``` file APIKEY value to generated APIKEY from newsapi.
 
 use this link for video demo :: https://drive.google.com/drive/folders/1Yi6lNyKB5ycijoKlhPJ-ocVHWzTflXmR?usp=sharing
 
