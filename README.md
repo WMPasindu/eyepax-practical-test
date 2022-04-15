@@ -18,6 +18,7 @@ Generate APK - first use yarn or npm install -> cd android && ./gradlew assemble
 Set iOS deployment target
 
 Follow below steps
+* open Xcode
 * cd ios - and
 * pod install to update the pods.
 * open runner.xcworkspace from ids folder
