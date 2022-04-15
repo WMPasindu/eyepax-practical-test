@@ -32,7 +32,7 @@ Follow the uploading steps
 
 ## Developed for
 <p>
-    ETIT PROJECT<br/>
+    Eyepax practice test ---- <br/>
     Pasindu Weerakoon<br/>
     Eyepax -> Practice test.
 </p>
