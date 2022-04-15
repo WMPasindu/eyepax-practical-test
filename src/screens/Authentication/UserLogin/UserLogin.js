@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   mainBody: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#307ecc',
+    backgroundColor: '#f2f2f2',
     alignContent: 'center',
   },
   SectionStyle: {
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: '#7DE24E',
+    backgroundColor: '#0080FF',
     borderWidth: 0,
     color: '#FFFFFF',
     borderColor: '#7DE24E',
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
-    color: 'white',
+    color: '#0080FF',
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     borderColor: '#dadae8',
   },
   registerTextStyle: {
-    color: '#FFFFFF',
+    color: '#0080FF',
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 14,

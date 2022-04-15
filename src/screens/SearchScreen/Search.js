@@ -21,7 +21,12 @@ const Dashboard = ({navigation}) => {
   }, [selectedCategoryValue]);
 
   const {articles, articlesCount} = useSelector(state => state.topNewsReducer);
-  const [articleArray, setArticlesArray] = useState(articles);
+
+  const [articleArray, setArticlesArray] = useState([]);
+
+  useEffect(() => {
+    setArticlesArray(articles);
+  }, [articles]);
 
   const ANIMAL_NAMES = [
     {
@@ -105,7 +110,7 @@ const Dashboard = ({navigation}) => {
           ref={ref => (panelRef.current = ref)}
           wrapperStyle={{backgroundColor: '#FFF'}}>
           <View style={{height: 400}}>
-            <Text style={{height: 110}}>Some random content</Text>
+            <Text style={{height: 110}}>This is not implemented yet.</Text>
           </View>
         </BottomSheet>
       </View>

@@ -12,6 +12,7 @@ import moment from 'moment';
 import {ScrollView} from 'react-native-gesture-handler';
 import {BackIconWithBackground, FavouritIcon} from '../../assets';
 import COLORS from '../../const/colors';
+import ToastService from '../../services/ToastService';
 
 const NewsDetails = ({navigation, route}) => {
   const item = route.params.itemObject;
@@ -83,7 +84,15 @@ const NewsDetails = ({navigation, route}) => {
           </Text>
         </ScrollView>
       </View>
-      <TouchableOpacity style={style.iconContainer}>
+      <TouchableOpacity
+        style={style.iconContainer}
+        onPress={() =>
+          ToastService({
+            title: 'Information',
+            message: 'Service Implemented.',
+            type: 'info',
+          })
+        }>
         <FavouritIcon />
       </TouchableOpacity>
       {/* <View style={style.footer}>

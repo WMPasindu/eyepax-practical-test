@@ -36,11 +36,17 @@ const Dashboard = ({navigation}) => {
     );
   }, [selectedCategoryId]);
 
+  const {articles, articlesCount} = useSelector(state => state.topNewsReducer);
+
+  const [articleArray, setArticlesArray] = useState([]);
+
+  useEffect(() => {
+    setArticlesArray(articles);
+  }, [articles]);
+
   const fetchMoreData = () => {
     console.log('Helloooooo');
   };
-
-  const {articles, articlesCount} = useSelector(state => state.topNewsReducer);
 
   const categories = [
     {
@@ -117,7 +123,7 @@ const Dashboard = ({navigation}) => {
       </View>
 
       <View style={styles.containerNewsLineList}>
-        <CustomNewsListItem articles={articles} navigate={navigation} />
+        <CustomNewsListItem articles={articleArray} navigate={navigation} />
       </View>
     </SafeAreaView>
   );

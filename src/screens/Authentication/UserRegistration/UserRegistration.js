@@ -59,7 +59,7 @@ const UserRegistration = ({navigation}) => {
 
   return (
     <View
-      style={{flex: 1, justifyContent: 'center', backgroundColor: '#307ecc'}}>
+      style={{flex: 1, justifyContent: 'center', backgroundColor: '#f2f2f2'}}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonStyle: {
-    backgroundColor: '#7DE24E',
+    backgroundColor: '#0080FF',
     borderWidth: 0,
     color: '#FFFFFF',
     borderColor: '#7DE24E',
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
-    color: 'white',
+    color: '#0080FF',
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   successTextStyle: {
-    color: 'white',
+    color: 'green',
     textAlign: 'center',
     fontSize: 18,
     padding: 30,
