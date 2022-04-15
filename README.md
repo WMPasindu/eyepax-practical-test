@@ -18,8 +18,8 @@ Generate APK - first use yarn or npm install -> cd android && ./gradlew assemble
 Set iOS deployment target
 
 Follow below steps
-* setup android sdk - android studio - build and create a release build.
-* get packages
+* cd ios - and
+* pod install to update the pods.
 * open runner.xcworkspace from ids folder
 
 The following commands will generate the runner.app file
@@ -30,6 +30,8 @@ The following commands will generate the runner.app file
 Select Product -> Archive
 Follow the uploading steps
 
+~~ or
+ you can use `npx react-native run-ios --configuration Release` to generate release from terminal.
 
 ## Developed for
 <p>
