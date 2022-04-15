@@ -5,7 +5,7 @@ Practice is an Integrated with News API.
 ## Starting point
 The Project has ```app.js``` as Entry Point.
 
-Video dem0 :: https://drive.google.com/drive/folders/1Yi6lNyKB5ycijoKlhPJ-ocVHWzTflXmR?usp=sharing
+use this link for video demo :: https://drive.google.com/drive/folders/1Yi6lNyKB5ycijoKlhPJ-ocVHWzTflXmR?usp=sharing
 
 
 ## Android release steps
