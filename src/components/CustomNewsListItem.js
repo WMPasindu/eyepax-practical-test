@@ -35,17 +35,23 @@ const CustomNewsListItem = ({articles, navigate}) => {
                       position: 'absolute',
                       top: 0,
                       left: 0,
-                      right: 10,
+                      right: 0,
                       bottom: 0,
                       justifyContent: 'flex-end',
-                      alignItems: 'center',
+                      backgroundColor: '#000',
+                      opacity: 0.6,
                     }}>
-                    <Text style={styles.titleText}>{item.title}</Text>
-                    <View style={styles.textContainer}>
-                      <Text style={styles.authorText}>{item.author}</Text>
-                      <Text style={styles.dateText}>
-                        {moment(item.publishedAt).format('dddd, d MMM yyyy')}
-                      </Text>
+                    <View
+                      style={{
+                        width: '92%',
+                      }}>
+                      <Text style={styles.titleText}>{item.title}</Text>
+                      <View style={styles.textContainer}>
+                        <Text style={styles.authorText}>{item.author}</Text>
+                        <Text style={styles.dateText}>
+                          {moment(item.publishedAt).format('dddd, DD MMM yyyy')}
+                        </Text>
+                      </View>
                     </View>
                     {/* <Text style={styles.descriptionText}>
                       {item.description}
@@ -81,8 +87,6 @@ const styles = StyleSheet.create({
   image: {
     width: ITEM_WIDTH,
     height: 150,
-    opacity: 1,
-    backgroundColor: 'rgba(255,0,0,.6)',
   },
   header: {
     color: '#222',
@@ -100,19 +104,20 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    textAlign: 'center',
+    justifyContent: 'space-between',
+    margin: 10,
+    opacity: 1,
   },
   authorText: {
     color: 'white',
     fontSize: 10,
     padding: 5,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
   titleText: {
     color: 'white',
+    opacity: 2,
     fontSize: 16,
     padding: 20,
   },
@@ -120,7 +125,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 10,
     padding: 5,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
   descriptionText: {

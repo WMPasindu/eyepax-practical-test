@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View, FlatList} from 'react-native';
 
 const CategoryListItem = ({data, onPress, selectItem, navigation}) => {
@@ -10,7 +10,7 @@ const CategoryListItem = ({data, onPress, selectItem, navigation}) => {
         renderItem={({item, index}) => {
           return (
             <View key={index}>
-              <TouchableOpacity onPress={() => onPress(index)}>
+              <TouchableOpacity onPress={() => onPress(index, item.name)}>
                 <View
                   style={
                     selectItem == index

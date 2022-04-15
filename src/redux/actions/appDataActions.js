@@ -22,13 +22,14 @@ const getDataToDashboad = (sortBy, date) => async dispatch => {
     API_KEY;
   dispatch(setActive());
 
+  console.log(endpoint);
   try {
     const response = await get({
       endpoint,
     });
     if (response.ok) {
       const data = await response.json();
-      console.log('jjjjj', data);
+      // console.log(data);
       if (data.status === 'ok') {
         dispatch(setInactive());
         dispatch(setArticles(data.articles));

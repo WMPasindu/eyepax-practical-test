@@ -46,7 +46,7 @@ const NewsDetails = ({navigation, route}) => {
               color: COLORS.dark,
               margin: 5,
             }}>
-            {moment(item.publishedAt).format('dddd, d MMM yyyy')}
+            {moment(item.publishedAt).format('dddd, DD MMM yyyy')}
           </Text>
           <Text
             style={{

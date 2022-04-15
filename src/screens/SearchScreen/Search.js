@@ -1,14 +1,27 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet, TextInput, Text} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import CustomNewsListItem from '../../components/CustomNewsListItem';
 import CategoryListItem from '../../components/CategoryListItem';
 import BottomSheet from 'react-native-simple-bottom-sheet';
+import moment from 'moment';
+import {getDataToDashboad} from '../../redux/actions/appDataActions';
 
 const Dashboard = ({navigation}) => {
   const panelRef = useRef(null);
-  const [selectedItem, setSelectedItem] = useState(0);
+  const [selectedCategoryId, setSeleactCategoryId] = useState(0);
+  const [selectedCategoryValue, setSeleactCategoryValue] =
+    useState('popularity');
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      getDataToDashboad(selectedCategoryValue, moment().format('YYYY-MM-DD')),
+    );
+  }, [selectedCategoryValue]);
+
   const {articles, articlesCount} = useSelector(state => state.topNewsReducer);
+  const [articleArray, setArticlesArray] = useState(articles);
 
   const ANIMAL_NAMES = [
     {
@@ -37,13 +50,27 @@ const Dashboard = ({navigation}) => {
     },
   ];
 
-  const clicked = value => {
-    if (value === 0) {
+  const onSelectCategory = (id, name) => {
+    if (id === 0) {
       panelRef.current.togglePanel();
-      setSelectedItem(value);
+      setSeleactCategoryId(id);
     } else {
-      setSelectedItem(value);
+      setSeleactCategoryId(id);
+      setSeleactCategoryValue(name.toLowerCase());
     }
+  };
+
+  const searchItems = text => {
+    let newData = articleArray.filter(item => {
+      const itemData = `${item.title}`;
+      const textData = text.toUpperCase();
+      if (text.length > 0) {
+        return itemData.toUpperCase().indexOf(textData) > -1;
+      } else {
+        return articles;
+      }
+    });
+    setArticlesArray(newData);
   };
 
   return (
@@ -53,7 +80,7 @@ const Dashboard = ({navigation}) => {
           <TextInput
             autoCapitalize="none"
             autoCorrect={false}
-            onChangeText={this.handleSearch}
+            onChangeText={searchItems}
             status="info"
             placeholder="Dogecoin to the Moon..."
             style={styles.containerSearch}
@@ -65,13 +92,13 @@ const Dashboard = ({navigation}) => {
           <CategoryListItem
             data={ANIMAL_NAMES}
             navigate={navigation}
-            onPress={clicked}
-            selectItem={selectedItem}
+            onPress={onSelectCategory}
+            selectItem={selectedCategoryId}
           />
         </View>
 
         <View style={styles.containerNewsLineList}>
-          <CustomNewsListItem articles={articles} navigate={navigation} />
+          <CustomNewsListItem articles={articleArray} navigate={navigation} />
         </View>
         <BottomSheet
           isOpen={false}
@@ -89,6 +116,7 @@ const Dashboard = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: '100%',
     backgroundColor: '#FFF',
   },
   containerSearchArea: {

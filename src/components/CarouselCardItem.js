@@ -23,6 +23,8 @@ const CarouselCardItem = ({item, index}) => {
             bottom: 0,
             justifyContent: 'flex-end',
             alignItems: 'center',
+            backgroundColor: '#000',
+            opacity: 0.6,
           }}>
           <Text style={styles.authorText}>{item.author}</Text>
           <Text style={styles.titleText}>{item.title}</Text>

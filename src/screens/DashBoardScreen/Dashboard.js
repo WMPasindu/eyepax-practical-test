@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getDataToDashboad,
@@ -18,12 +19,22 @@ import CategoryListItem from '../../components/CategoryListItem';
 import {SeeAllIcon, BellIcon} from '../../assets';
 
 const Dashboard = ({navigation}) => {
-  const [selectedItem, setSelectedItem] = useState(0);
+  const [selectedCategoryId, setSeleactCategoryId] = useState(0);
+  const [selectedCategoryValue, setSeleactCategoryValue] =
+    useState('popularity');
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getDataToDashboad('popularity', '2022-04-14'));
+    dispatch(
+      getDataToDashboad(selectedCategoryValue, moment().format('YYYY-MM-DD')),
+    );
     dispatch(getTopHeadLines('country', 'us'));
   }, []);
+
+  useEffect(() => {
+    dispatch(
+      getDataToDashboad(selectedCategoryValue, moment().format('YYYY-MM-DD')),
+    );
+  }, [selectedCategoryId]);
 
   const fetchMoreData = () => {
     console.log('Helloooooo');
@@ -31,7 +42,7 @@ const Dashboard = ({navigation}) => {
 
   const {articles, articlesCount} = useSelector(state => state.topNewsReducer);
 
-  const ANIMAL_NAMES = [
+  const categories = [
     {
       id: 1,
       name: 'Healthy',
@@ -54,13 +65,9 @@ const Dashboard = ({navigation}) => {
     },
   ];
 
-  if (articles) {
-    console.log('Hello Pasindu ', articles);
-  }
-
-  const clicked = value => {
-    setSelectedItem(value);
-    console.log('asasasasasasasasasasas', value);
+  const onSelectCategory = (id, name) => {
+    setSeleactCategoryId(id);
+    setSeleactCategoryValue(name.toLowerCase());
   };
 
   return (
@@ -102,10 +109,10 @@ const Dashboard = ({navigation}) => {
 
       <View style={styles.containerCategoryList}>
         <CategoryListItem
-          data={ANIMAL_NAMES}
+          data={categories}
           navigate={navigation}
-          onPress={clicked}
-          selectItem={selectedItem}
+          onPress={onSelectCategory}
+          selectItem={selectedCategoryId}
         />
       </View>
 

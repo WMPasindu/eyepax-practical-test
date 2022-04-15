@@ -21,7 +21,6 @@ const login =
   async dispatch => {
     const userData = await getUserData();
     if (userData) {
-      console.log(userData.userName);
       if (userData.userName === username && userData.password === password) {
         dispatch(setLoginActive());
       } else {
